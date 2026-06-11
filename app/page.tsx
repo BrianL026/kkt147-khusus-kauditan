@@ -7,7 +7,7 @@ import { MapPin, Users, Ruler, Sprout, Landmark, Sparkles, Navigation } from "lu
 export default function Home() {
   // Calculate aggregate stats
   const totalVillages = villages.length;
-  const totalPopulation = villages.reduce((acc, curr) => acc + curr.population, 0);
+  const totalPopulation = 38420; // Estimasi total penduduk kecamatan
   const subdistrictArea = "95.3 km²"; // Typical total size for Kauditan
 
   return (
