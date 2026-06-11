@@ -16,9 +16,9 @@ const getInfographicPath = (slug: string) => {
     case "kaasar": return "/infografis/KAASAR.png";
     case "kaima": return "/infografis/KAIMA.png";
     case "karegesan": return "/infografis/KAREGESAN.png";
-    case "kauditan-1": return "/infografis/KAUDITAN 1.jpg";
+    case "kauditan-1": return "/infografis/KAUDITAN 1.png";
     case "kauditan-2": return "/infografis/KAUDITAN 2.png";
-    case "kawiley": return "/infografis/KIWALEY.png";
+    case "kawiley": return "/infografis/KAWILEY.png";
     case "lembean": return "/infografis/LEMBEAN.png";
     case "paslaten": return "/infografis/PASLATEN.png";
     case "treman": return "/infografis/TREMAN.png";
