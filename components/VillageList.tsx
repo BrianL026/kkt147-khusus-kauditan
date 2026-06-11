@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import Link from "next/link";
 import { Village } from "@/data/villages";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Maximize2, Download, X, ExternalLink } from "lucide-react";
+import { Search, Maximize2, Download, X } from "lucide-react";
 
 interface VillageListProps {
   villages: Village[];
@@ -39,21 +38,14 @@ export default function VillageList({ villages }: VillageListProps) {
     return villages.filter((v) => {
       return (
         v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        v.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        v.komoditas.daftarKomoditas.some((c) => c.toLowerCase().includes(searchQuery.toLowerCase()))
+        v.tagline.toLowerCase().includes(searchQuery.toLowerCase())
       );
     });
   }, [villages, searchQuery]);
 
-  const handleOpenLightbox = (e: React.MouseEvent, imagePath: string, title: string) => {
-    e.stopPropagation(); // Prevent card link navigation
-    e.preventDefault();
+  const handleOpenLightbox = (imagePath: string, title: string) => {
     setLightboxImage(imagePath);
     setLightboxTitle(title);
-  };
-
-  const handleDownload = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent card link navigation
   };
 
   return (
@@ -61,7 +53,7 @@ export default function VillageList({ villages }: VillageListProps) {
       {/* Search & Counter Controls */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-450" />
           <Input
             type="text"
             placeholder="Cari desa..."
@@ -84,6 +76,7 @@ export default function VillageList({ villages }: VillageListProps) {
             return (
               <Card
                 key={village.slug}
+                onClick={() => handleOpenLightbox(infographicPath, `Desa ${village.name}`)}
                 className="group relative h-80 rounded-2xl border-slate-200 dark:border-slate-800/80 overflow-hidden flex flex-col justify-end transition-all duration-300 transform hover:-translate-y-1.5 hover:shadow-xl cursor-pointer"
                 style={{ animationDelay: `${idx * 50}ms` }}
               >
@@ -96,25 +89,25 @@ export default function VillageList({ villages }: VillageListProps) {
                 {/* Dark Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-slate-900/10 opacity-90 transition-opacity" />
 
-                {/* Main Card Link Wrap */}
-                <Link href={`/desa/${village.slug}`} className="absolute inset-0 z-10 flex flex-col justify-end p-5 pb-20">
+                {/* Card Text Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-5 pb-20">
                   <CardHeader className="p-0 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-2xl font-black text-white group-hover:text-emerald-300 transition-colors">
-                        Desa {village.name}
-                      </CardTitle>
-                      <ExternalLink className="h-4.5 w-4.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <span className="text-[10px] text-emerald-400 font-extrabold uppercase tracking-widest">
-                      Lihat Profil 4 Pilar
+                    <CardTitle className="text-2xl font-black text-white group-hover:text-emerald-300 transition-colors">
+                      Desa {village.name}
+                    </CardTitle>
+                    <span className="text-[10px] text-emerald-450 font-extrabold uppercase tracking-widest">
+                      Klik untuk memperbesar
                     </span>
                   </CardHeader>
-                </Link>
+                </div>
 
                 {/* Double Buttons Footer */}
                 <CardFooter className="relative z-20 p-5 pt-0 border-t border-white/10 bg-slate-950/70 backdrop-blur-md flex gap-3">
                   <Button
-                    onClick={(e) => handleOpenLightbox(e, infographicPath, `Desa ${village.name}`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenLightbox(infographicPath, `Desa ${village.name}`);
+                    }}
                     className="flex-1 h-9 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 cursor-pointer rounded-lg gap-1.5"
                   >
                     <Maximize2 className="h-3.5 w-3.5" />
@@ -124,7 +117,7 @@ export default function VillageList({ villages }: VillageListProps) {
                   <a 
                     href={infographicPath} 
                     download={`Infografis_Desa_${village.name}`}
-                    onClick={handleDownload}
+                    onClick={(e) => e.stopPropagation()}
                     className="flex-1"
                   >
                     <Button
@@ -165,7 +158,7 @@ export default function VillageList({ villages }: VillageListProps) {
           {/* Modal Content Wrapper */}
           <div 
             className="relative max-w-5xl max-h-[85vh] w-full flex items-center justify-center p-2"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image
+            onClick={(e) => e.stopPropagation()}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
